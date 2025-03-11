@@ -1,0 +1,22 @@
+SELECT 
+    job_title_short,
+    job_location,
+    case
+        when job_location = 'Anywhere' then 'Remote'
+        when job_location = 'New York, NY' then 'Local'
+        else 'Onsite'
+    end as location_category
+FROM
+    job_postings_fact;
+
+SELECT 
+    count(job_id) as number_of_jobs,
+    case
+        when job_location = 'Anywhere' then 'Remote'
+        when job_location = 'New York, NY' then 'Local'
+        else 'Onsite'
+    end as location_category
+FROM
+    job_postings_fact
+group by
+    location_category;

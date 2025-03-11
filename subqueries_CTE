@@ -1,0 +1,43 @@
+SELECT *
+FROM (
+    SELECT *
+    FROM job_postings_fact
+    WHERE extract(month from job_posted_date) = 1
+) as january_jobs;
+
+with january_jobs as (
+    SELECT *
+    FROM job_postings_fact
+    WHERE extract(month from job_posted_date) = 1
+)
+SELECT *
+from january_jobs;
+
+SELECT name
+from company_dim
+where company_id in (
+    SELECT
+        company_id
+    from
+        job_postings_fact
+    WHERE
+        job_no_degree_mention = true
+)
+
+With company_job_count as (
+SELECT 
+    company_id,
+    count(*) as total_jobs
+from
+    job_postings_fact
+GROUP BY
+    company_id
+)
+
+SELECT 
+    name,
+    company_job_count.total_jobs
+from company_dim
+left join company_job_count on company_job_count.company_id = company_dim.company_id
+ORDER BY
+    total_jobs desc
