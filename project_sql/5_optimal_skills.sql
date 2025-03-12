@@ -41,6 +41,7 @@ ORDER BY
     average_salary DESC
 LIMIT 25
 
+-- more concisely --
 SELECT
     skills_dim.skills,
     skills_dim.skill_id,
